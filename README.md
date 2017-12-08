@@ -24,3 +24,19 @@ where:
 
 where:
 - _-c_ is the parameter for clearing the display
+
+## Build
+
+The easiest way to build the tool from sources is to use the toolchain in the [fread-vagrant](https://github.com/fread-ink/fread-vagrant) VM.
+
+1. Copy the `fips.c` source file to the running `fread-vagrant` VM.
+1. SSH to the `fread-vagrant` VM.
+1. Execute `sudo apt-get install libpng12-dev` to install the include files for `libpng`. This is required for the tool to compile to its dependent libraries.
+1. Copy the `libpng12.so.0.50.0` and `libz.so.1.2.8` shared libraries to the same folder where `fips.c` was copied. This is required for the tool to link to its dependent libraries. You can find these libraries in the [fread-userland](https://github.com/fread-ink/fread-userland) VM or on a device with the fread.ink firmware already installed.
+1. Execute the following command:
+
+```sh
+arm-linux-gnueabihf-gcc -std=gnu99 -I/usr/include -I/usr/include/libpng fips.c -o fips -l:libpng12.so.0.50.0 -l:libz.so.1.2.8
+```
+
+The `fips` executable will be generated in the same folder. You can now copy it to a device which has the fread.ink firmware installed.
